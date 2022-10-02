@@ -1,7 +1,10 @@
 import lxml
 from bs4 import BeautifulSoup as bs
+from create_json import CreateJson
 
 # Класс по парсингу таблиц из сайта
+#genTbl closedTbl crossRatesTbl
+#genTbl closedTbl crossRatesTbl elpTbl elp20
 
 class Table:
     def __init__(self,source):
@@ -10,11 +13,12 @@ class Table:
         self.list_table = None
         self.inform = False
         self.not_table = None
+        self.create_json = CreateJson()
 
 #Проверка наличии таблицы
 
     def check_body_table(self):
-        self.list_table = self.soup_body.find_all('tbody')
+        self.list_table = self.soup_body.select("table.genTbl")
         self.not_table = self.soup_body.find('div',{'class':'fullHeaderTwoColumnPage--top'})
         if self.not_table:
             self.inform = True
@@ -35,23 +39,31 @@ class Table:
 #Функция поиска если не таблица
 
     def find_not_table(self):
-        list_title = self.soup_body.find('h1')
+        list_title = self.soup_body.find('h1').text.replace("\t", "")
         information = self.soup_body.find('div',{'class':'fullHeaderTwoColumnPage--top'}).select_one('div.top.bold.inlineblock').select('span')
-        print(list_title.text)
-        print(information[0].text,information[1].text,information[2].text,information[3].text,information[4].text)
-        print('+++++',self.inform)
+        table = {list_title: [information[1].text, information[2].text, information[4].text]}
+        self.create_json.create(table)
+        self.create_json.print_no_table()
+
+
 
 #Функция вывода если таблица
 
     def output_info_table(self,list_title):
+        table = {}
         if len(list_title) == len(self.list_table):
             for i in range(len(list_title)):
                 title = list_title[i].text
-                print(title)
+                if title not in table.keys():
+                    table[title] = {}
                 list_tag_td = self.list_table[i].find_all('td')
-                all_text = "|".join([tag_td.text.strip() for tag_td in list_tag_td]).replace('|||','\n').replace('||','\n')
-                print(all_text,'\n')
+                tbl = [tag_td.text.strip() for tag_td in list_tag_td]
+                for j in range(len(tbl)):
+                    if j % 10 == 1:
+                        table[title][tbl[j]] = tbl[j + 1:j + 8]
 
+        self.create_json.create(table)
+        self.create_json.print_table()
 #Вывод информации с сайта
 
     def info_tables(self):
