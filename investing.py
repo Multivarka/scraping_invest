@@ -36,3 +36,11 @@ class Investing:
                 else:
                     print('error')
 
+    def get_info1(self, category, subcategory):
+        data_json = self.__category.get_category(self.__html_page)
+        urls = data_json[category][subcategory]
+        new_source = self.__newconnect.connect(urls)
+        body_table = Table(new_source)
+        return body_table.info_tables()
+
+

@@ -1,6 +1,6 @@
 from category import Category
 from connectrequests import NewConnect
-from  connectselen import GetHtmlPage
+from connectselen import GetHtmlPage
 from investing import Investing
 
 

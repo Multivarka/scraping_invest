@@ -1,7 +1,7 @@
 from telebot import types
 
 def start_kb():
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
     btn1 = types.KeyboardButton("Начать")
     markup.add(btn1)
     return markup
@@ -13,3 +13,8 @@ def categories_kb(text_data):
         markup.add(button1)
     return markup
 
+def return_kb():
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    btn1 = types.KeyboardButton("Вернуться")
+    markup.add(btn1)
+    return markup

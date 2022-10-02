@@ -43,8 +43,7 @@ class Table:
         information = self.soup_body.find('div',{'class':'fullHeaderTwoColumnPage--top'}).select_one('div.top.bold.inlineblock').select('span')
         table = {list_title: [information[1].text, information[2].text, information[4].text]}
         self.create_json.create(table)
-        self.create_json.print_no_table()
-
+        return self.create_json.get_table()
 
 
 #Функция вывода если таблица
@@ -63,20 +62,20 @@ class Table:
                         table[title][tbl[j]] = tbl[j + 1:j + 8]
 
         self.create_json.create(table)
-        self.create_json.print_table()
+        return self.create_json.get_table()
 #Вывод информации с сайта
 
     def info_tables(self):
         self.find_table()
         if self.inform:
-            self.find_not_table()
+            return self.find_not_table()
         else:
-            if len(self.list_table)>1:
+            if len(self.list_table) > 1:
                 list_title = self.soup_body.find_all('h2')
-                self.output_info_table(list_title)
+                return self.output_info_table(list_title)
             elif len(self.list_table) == 1:
                 list_title = self.soup_body.find_all('h1')
-                self.output_info_table(list_title)
+                return self.output_info_table(list_title)
 
 
 
