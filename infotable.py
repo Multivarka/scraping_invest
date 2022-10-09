@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup as bs
 from create_json import CreateJson
 
 # Класс по парсингу таблиц из сайта
-#genTbl closedTbl crossRatesTbl
-#genTbl closedTbl crossRatesTbl elpTbl elp20
 
 class Table:
     def __init__(self,source):
@@ -42,7 +40,7 @@ class Table:
         list_title = self.soup_body.find('h1').text.replace("\t", "")
         information = self.soup_body.find('div',{'class':'fullHeaderTwoColumnPage--top'}).select_one('div.top.bold.inlineblock').select('span')
         table = {list_title: [information[1].text, information[2].text, information[4].text]}
-        self.create_json.create(table)
+        self.create_json.create(table, self.inform)
         return self.create_json.get_table()
 
 
@@ -61,7 +59,7 @@ class Table:
                     if j % 10 == 1:
                         table[title][tbl[j]] = tbl[j + 1:j + 8]
 
-        self.create_json.create(table)
+        self.create_json.create(table, self.inform)
         return self.create_json.get_table()
 #Вывод информации с сайта
 

@@ -3,21 +3,12 @@
 class CreateJson:
     def __init__(self):
         self.table = {}
+        self.istable = True
 
-    def create(self, table):
+    def create(self, table, istable):
         for i, j in table.items():
             self.table[i] = j
-
-    def print_table(self):
-        for i in self.table:
-            print("\n" + i + "\n")
-            max_l = max([len(n) for n in self.table[i].keys()])
-            for j in self.table[i].keys():
-                print(f"{j}{(max_l - len(j) + 2) * ' '}{self.table[i][j]}")
-
-    def print_no_table(self):
-        for i, j in self.table.items():
-            print(f"\n{i}  {j}")
+        self.istable = istable
 
     def get_table(self):
-        return self.table
+        return self.table, self.istable

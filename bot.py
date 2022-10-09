@@ -44,7 +44,7 @@ def subcategories(call):
 
 def send_result(call, cat):
     info = get_info(*cat)
-    bot.send_message(call.message.chat.id, beautify(info), reply_markup=return_kb())
+    bot.send_message(call.message.chat.id, beautify(info[0], info[1]), reply_markup=return_kb())
 
 def get_info(cat, subcat):
     url = 'https://ru.investing.com'
@@ -65,16 +65,16 @@ def get_info(cat, subcat):
             invest.set_html_page(html_page=html_page)
             return invest.get_info1(cat, subcat)
 
-def beautify(res):
+def beautify(res, istable):
     s = ""
-    if len(res.keys()) > 1:
+    if not istable:
         for i in res.keys():
             s += f"\n{i}:\n\n"
             for j in res[i].keys():
                 s += f"{j}\n{',   '.join([n for n in res[i][j] if n != ''])}\n\n"
     else:
         for i in res.keys():
-            s += i + "\n" + ',   '.join([n for n in res[i] if n != ''])
+            s += i + ":\n" + ',   '.join([n for n in res[i] if n != ''])
     return s
 
 print("Бот запущен")
